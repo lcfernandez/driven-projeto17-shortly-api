@@ -11,7 +11,5 @@ export function userSchemaValidation(req, res, next) {
         );
     }
 
-    // TODO: validate if email already exists
-
     next();
 }

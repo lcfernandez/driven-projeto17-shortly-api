@@ -7,7 +7,9 @@ dotenv.config();
 // database connection
 const { Pool } = pkg;
 
-export const connectionDB = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: process.env.SSL_ENABLED
-});
+export const connectionDB = new Pool(
+    {
+        connectionString: process.env.DATABASE_URL,
+        ssl: eval(process.env.SSL_ENABLED)
+    }
+);

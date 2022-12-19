@@ -1,16 +1,16 @@
-// TODO: remove after db creation
-import { users } from "../server.js";
+import { connectionDB } from "../database/database.js";
+
 import bcrypt from "bcrypt";
 
-export function signUp(req, res) {
+export async function signUp(req, res) {
     const user = req.body;
     const passwordHash = bcrypt.hashSync(user.password, 12);
 
-    // TODO: remove after db creation
-    delete user.confirmPassword;
-    users.push({ ...user, password: passwordHash });
+    try {
+        await connectionDB.query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3);`, [user.name, user.email, passwordHash]);
 
-    // TODO: insert into db
-    
-    res.sendStatus(201);
+        res.sendStatus(201);
+    } catch (err) {
+        res.status(409).send(err.message);
+    }
 }
