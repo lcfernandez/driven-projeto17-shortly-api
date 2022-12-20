@@ -1,7 +1,21 @@
-import { userSchema } from "../schemas/usersSchema.js";
+import { userSignInSchema, userSignUpSchema } from "../schemas/usersSchema.js";
 
-export function userSchemaValidation(req, res, next) {
-    const { error } = userSchema.validate(req.body, { abortEarly: false });
+export function userSignInSchemaValidation(req, res, next) {
+    const { error } = userSignInSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        return res.status(422).send(
+            error.details.map(
+                detail => detail.message
+            )
+        );
+    }
+
+    next();
+}
+
+export function userSignUpSchemaValidation(req, res, next) {
+    const { error } = userSignUpSchema.validate(req.body, { abortEarly: false });
 
     if (error) {
         return res.status(422).send(
