@@ -2,15 +2,6 @@ import { connectionDB } from "../database/database.js";
 
 export async function findTop10(req, res) {
     try {
-        // const response = await connectionDB.query(
-        //     `SELECT u.name, SUM(l.visits) AS "visitCount"
-        //     FROM links l
-        //     JOIN users u ON l."userId" = u.id
-        //     GROUP by u.id, l.visits
-        //     ORDER BY visits DESC
-        //     LIMIT 10;`
-        // );
-
         const response = await connectionDB.query(
             `SELECT
                 u.id,
