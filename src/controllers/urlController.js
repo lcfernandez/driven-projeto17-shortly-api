@@ -22,6 +22,19 @@ export async function findById(req, res) {
     }
 }
 
+export async function open(req, res) {
+    const id = res.locals.linkId;
+    const url = res.locals.url;
+
+    try {
+        await connectionDB.query(`UPDATE links SET visits = visits + 1 WHERE id = $1;`, [id]);
+
+        res.redirect(url);
+    } catch(err) {
+        res.status(500).send(err.message);
+    }
+}
+
 export async function shorten(req, res) {
     const { userId } = res.locals;
     const { url } = req.body;
