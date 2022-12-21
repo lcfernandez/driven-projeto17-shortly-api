@@ -33,3 +33,28 @@ export function urlSchemaValidation(req, res, next) {
 
     next();
 }
+
+export async function urlUserValidation(req, res, next) {
+    const { userId } = res.locals;
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.sendStatus(404);
+    }
+
+    try {
+        const link = await connectionDB.query(`SELECT "userId" FROM links WHERE id = $1;`, [id]);
+
+        if (link.rowCount === 0) {
+            return res.sendStatus(404);
+        }
+
+        if (link.rows[0].userId !== userId) {
+            return res.sendStatus(401);
+        }
+
+        next();
+    } catch(err) {
+        res.status(500).send(err.message);
+    }
+}

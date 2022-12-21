@@ -23,13 +23,25 @@ export async function findById(req, res) {
 }
 
 export async function open(req, res) {
-    const id = res.locals.linkId;
-    const url = res.locals.url;
+    const { linkId } = res.locals;
+    const { url } = res.locals;
 
     try {
-        await connectionDB.query(`UPDATE links SET visits = visits + 1 WHERE id = $1;`, [id]);
+        await connectionDB.query(`UPDATE links SET visits = visits + 1 WHERE id = $1;`, [linkId]);
 
         res.redirect(url);
+    } catch(err) {
+        res.status(500).send(err.message);
+    }
+}
+
+export async function remove(req, res) {
+    const { id } = req.params;
+
+    try {
+        await connectionDB.query(`DELETE FROM links WHERE id = $1;`, [id]);
+        
+        res.sendStatus(204);
     } catch(err) {
         res.status(500).send(err.message);
     }
