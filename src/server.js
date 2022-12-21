@@ -1,4 +1,5 @@
 import authRoutes from "./routes/authRoutes.js";
+import rankingRoutes from "./routes/rankingRoutes.js";
 import urlRoutes from "./routes/urlRoutes.js";
 import usersRoutes from "./routes/usersRoutes.js";
 
@@ -10,6 +11,7 @@ const app = express();
 //configs
 app.use(express.json());
 app.use(authRoutes);
+app.use(rankingRoutes);
 app.use(urlRoutes);
 app.use(usersRoutes);
 
