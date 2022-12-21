@@ -1,4 +1,30 @@
+import { connectionDB } from "../database/database.js";
 import { userSignInSchema, userSignUpSchema } from "../schemas/usersSchema.js";
+
+import jwt from "jsonwebtoken";
+
+export async function authSessionValidation(req, res, next) {
+    try {
+        const token = req.headers.authorization?.replace("Bearer ", "");
+
+        if (!token) {
+            return res.sendStatus(401);
+        }
+
+        const { sessionId } = jwt.verify(token, process.env.JWT_SECRET);
+        const sessionExists = await connectionDB.query(`SELECT "userId" FROM sessions WHERE id = $1;`, [sessionId]);
+
+        if (sessionExists.rowCount === 0) {
+            return res.sendStatus(401);
+        }
+
+        res.locals.userId = sessionExists.rows[0].userId;
+
+        next();
+    } catch(err) {
+        res.status(500).send(err.message);
+    }
+}
 
 export function userSignInSchemaValidation(req, res, next) {
     const { error } = userSignInSchema.validate(req.body, { abortEarly: false });
