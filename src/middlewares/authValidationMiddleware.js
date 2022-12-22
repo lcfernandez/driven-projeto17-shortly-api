@@ -11,11 +11,18 @@ export async function authSessionValidation(req, res, next) {
             return res.sendStatus(401);
         }
 
-        const { sessionId } = jwt.verify(token, process.env.JWT_SECRET);
+        const jwtVerify = jwt.verify(token, process.env.JWT_SECRET, (err, result) => { return { err, result } });
+
+        if (jwtVerify.err) {
+            return res.sendStatus(401);
+        }
+
+        const { sessionId } = jwtVerify.result;
+
         const sessionExists = await connectionDB.query(`SELECT "userId" FROM sessions WHERE id = $1;`, [sessionId]);
 
         if (sessionExists.rowCount === 0) {
-            return res.sendStatus(401);
+            return res.sendStatus(404);
         }
 
         res.locals.userId = sessionExists.rows[0].userId;

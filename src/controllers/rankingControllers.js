@@ -7,7 +7,7 @@ export async function findTop10(req, res) {
                 u.id,
                 u.name,
                 COUNT(l.*) AS "linksCount",
-                COALESCE(SUM(l.visits),0) AS "visitCount"
+                COALESCE(SUM(l.visits), 0) AS "visitCount"
             FROM users u
             LEFT JOIN links l ON l."userId" = u.id
             GROUP BY u.id
