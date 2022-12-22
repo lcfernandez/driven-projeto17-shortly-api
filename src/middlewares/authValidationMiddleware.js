@@ -18,7 +18,6 @@ export async function authSessionValidation(req, res, next) {
         }
 
         const { sessionId } = jwtVerify.result;
-
         const sessionExists = await connectionDB.query(`SELECT "userId" FROM sessions WHERE id = $1;`, [sessionId]);
 
         if (sessionExists.rowCount === 0) {
