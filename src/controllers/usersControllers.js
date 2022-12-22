@@ -8,11 +8,16 @@ export async function findAll(req, res) {
             `SELECT
                 u.id,
                 u.name,
-                SUM(l.visits) AS "visitCount",
-                json_agg(json_build_object('id', l.id, 'shortUrl', l."shortUrl", 'url', l.url, 'visitCount', l.visits)) AS "shortenedUrls"
-            FROM links l
-            JOIN users u ON l."userId" = u.id
-            WHERE l."userId" = $1
+                COALESCE(SUM(l.visits), 0) AS "visitCount",
+                COALESCE(
+                    json_agg(
+                        json_build_object('id', l.id, 'shortUrl', l."shortUrl", 'url', l.url, 'visitCount', l.visits)
+                    ) FILTER (WHERE l.* IS NOT NULL),
+                    '[]'
+                ) AS "shortenedUrls"
+            FROM users u
+            LEFT JOIN links l ON l."userId" = u.id
+            WHERE u.id = $1
             GROUP BY u.id;
             `,
             [userId]
