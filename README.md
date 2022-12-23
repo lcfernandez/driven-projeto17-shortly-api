@@ -2,7 +2,7 @@
 
 * **Projeto #17 - Shortly API** do aluno Luiz Cláudio F. Fernandez, Turma 8 da Driven.
 
-* **Deploy** (vulgo *Link da Titia*): https://projeto17-shortly-api.onrender.com
+* **Deploy**: https://projeto17-shortly-api.onrender.com
 
 ---
 
