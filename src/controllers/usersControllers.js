@@ -23,7 +23,11 @@ export async function findAll(req, res) {
             [userId]
         );
 
-        res.status(200).send(response.rows[0]);
+        if (response.rowCount === 0) {
+            res.sendStatus(404);
+        }
+
+        res.send(response.rows[0]);
     } catch(err) {
         res.status(500).send(err.message);
     }
