@@ -1,6 +1,6 @@
 import { connectionDB } from "../database/database.js";
 
-export async function findAll(req, res) {
+export async function findById(req, res) {
     const { userId } = res.locals;
 
     try {
