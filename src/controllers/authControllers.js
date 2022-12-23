@@ -35,6 +35,10 @@ export async function signUp(req, res) {
 
         res.sendStatus(201);
     } catch (err) {
-        res.status(409).send(err.message);
+        if (err.constraint === "users_email_key") {
+            return res.sendStatus(409);
+        }
+
+        res.status(500).send(err.message);
     }
 }
