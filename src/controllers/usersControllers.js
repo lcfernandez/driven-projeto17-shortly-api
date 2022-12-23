@@ -24,7 +24,7 @@ export async function findAll(req, res) {
         );
 
         if (response.rowCount === 0) {
-            res.sendStatus(404);
+            return res.sendStatus(404);
         }
 
         res.send(response.rows[0]);

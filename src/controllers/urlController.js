@@ -16,7 +16,7 @@ export async function findById(req, res) {
             return res.sendStatus(404);
         }
 
-        res.status(200).send(link.rows[0]);
+        res.send(link.rows[0]);
     } catch(err) {
         res.status(500).send(err.message);
     }
